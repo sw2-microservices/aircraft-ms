@@ -1,9 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { CreateAircraftDto } from './dto/create-aircraft.dto';
 import { UpdateAircraftDto } from './dto/update-aircraft.dto';
+import { PrismaClient } from 'generated/prisma';
 
 @Injectable()
-export class AircraftService {
+export class AircraftService extends PrismaClient implements OnModuleInit{
+
+  private readonly logger = new Logger('AircraftService');
+
+  onModuleInit() {
+    this.$connect();
+    this.logger.log('Database connected');
+  }
+  
   create(createAircraftDto: CreateAircraftDto) {
     return 'This action adds a new aircraft';
   }
