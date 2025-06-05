@@ -16,10 +16,16 @@ datasource db {
 
 model Aircraft {
   id          String   @id @default(uuid())
+
   model       String
   registration String
   seats_total Int
   configuration Json?
+
+  available   Boolean @default(true)
+
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
+
+  @@index([available])
 }

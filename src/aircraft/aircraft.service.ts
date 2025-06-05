@@ -4,6 +4,7 @@ import { UpdateAircraftDto } from './dto/update-aircraft.dto';
 import { PrismaClient } from 'generated/prisma';
 import { PaginatinoDto } from 'src/common/dto';
 import { last } from 'rxjs';
+import { Aircraft } from '../../generated/prisma/index';
 
 @Injectable()
 export class AircraftService extends PrismaClient implements OnModuleInit {
@@ -25,7 +26,13 @@ export class AircraftService extends PrismaClient implements OnModuleInit {
 
     const { page, limit } = paginationDto;
 
-    const totalPages = await this.aircraft.count();
+    const totalPages = await this.aircraft.count({
+      where: {
+        available: true,
+      }
+    }).then(total => {
+      return Math.ceil(total / limit);
+    });
 
     const lastPage = Math.ceil(totalPages / limit);
 
@@ -33,6 +40,9 @@ export class AircraftService extends PrismaClient implements OnModuleInit {
       data: await this.aircraft.findMany({
         take: limit,
         skip: (page - 1) * limit,
+        where: {
+          available: true,
+        }
       }),
       meta: {
         totalPages: totalPages,
@@ -46,6 +56,7 @@ export class AircraftService extends PrismaClient implements OnModuleInit {
     const aircraft = await this.aircraft.findFirst({
       where: {
         id: id,
+        available: true,
       }
     });
 
@@ -65,7 +76,21 @@ export class AircraftService extends PrismaClient implements OnModuleInit {
     })
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} aircraft`;
+  async remove(id: string) {
+
+    await this.findOne(id);
+
+    // return this.aircraft.delete({
+    //   where: { id: id }
+    // })
+
+    const aircraft = await  this.aircraft.update({
+      where: { id: id },
+      data: {
+        available: false,
+      }
+    });
+
+    return aircraft;
   }
 }
