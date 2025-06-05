@@ -56,8 +56,13 @@ export class AircraftService extends PrismaClient implements OnModuleInit {
     return aircraft;
   }
 
-  update(id: string, updateAircraftDto: UpdateAircraftDto) {
-    return `This action updates a #${id} aircraft`;
+  async update(id: string, updateAircraftDto: UpdateAircraftDto) {
+    await this.findOne(id);
+    
+    return this.aircraft.update({
+      where: { id: id },
+      data: updateAircraftDto
+    })
   }
 
   remove(id: string) {
