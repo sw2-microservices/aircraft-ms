@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { AircraftService } from './aircraft.service';
 import { CreateAircraftDto } from './dto/create-aircraft.dto';
 import { UpdateAircraftDto } from './dto/update-aircraft.dto';
+import { PaginatinoDto } from 'src/common/dto';
 
 @Controller('aircraft')
 export class AircraftController {
@@ -13,8 +14,8 @@ export class AircraftController {
   }
 
   @Get()
-  findAll() {
-    return this.aircraftService.findAll();
+  findAll(@Query('page') paginationDto: PaginatinoDto) {
+    return this.aircraftService.findAll(paginationDto);
   }
 
   @Get(':id')

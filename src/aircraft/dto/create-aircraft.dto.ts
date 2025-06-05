@@ -3,18 +3,15 @@ import { Type } from 'class-transformer';
 
 export class CreateAircraftDto {
   @IsString()
-  @IsNotEmpty()
-  model: string;
+  public model: string;
 
   @IsString()
-  @IsNotEmpty()
-  registration: string;
+  public registration: string;
 
   @Type(() => Number)
   @IsInt()
-  seatsTotal: number;
+  public seats_total: number;
 
   @IsOptional()
-  @IsObject()
-  configuration?: Record<string, any>;
+  public configuration?: any;
 }
