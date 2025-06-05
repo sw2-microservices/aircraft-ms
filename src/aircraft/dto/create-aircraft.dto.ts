@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsInt, IsOptional, IsObject } from 'class-validator';
+import { IsString, IsInt, IsOptional } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateAircraftDto {

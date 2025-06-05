@@ -3,8 +3,6 @@ import { CreateAircraftDto } from './dto/create-aircraft.dto';
 import { UpdateAircraftDto } from './dto/update-aircraft.dto';
 import { PrismaClient } from 'generated/prisma';
 import { PaginatinoDto } from 'src/common/dto';
-import { last } from 'rxjs';
-import { Aircraft } from '../../generated/prisma/index';
 
 @Injectable()
 export class AircraftService extends PrismaClient implements OnModuleInit {
