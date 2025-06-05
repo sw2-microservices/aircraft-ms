@@ -20,16 +20,16 @@ export class AircraftController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.aircraftService.findOne(+id);
+    return this.aircraftService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAircraftDto: UpdateAircraftDto) {
-    return this.aircraftService.update(+id, updateAircraftDto);
+    return this.aircraftService.update(id, updateAircraftDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.aircraftService.remove(+id);
+    return this.aircraftService.remove(id);
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { CreateAircraftDto } from './dto/create-aircraft.dto';
 import { UpdateAircraftDto } from './dto/update-aircraft.dto';
 import { PrismaClient } from 'generated/prisma';
@@ -42,15 +42,25 @@ export class AircraftService extends PrismaClient implements OnModuleInit {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} aircraft`;
+  async findOne(id: string) {
+    const aircraft = await this.aircraft.findFirst({
+      where: {
+        id: id,
+      }
+    });
+
+    if (!aircraft) {
+      throw new NotFoundException(`Aircraft with id ${id} not found`);
+    }
+
+    return aircraft;
   }
 
-  update(id: number, updateAircraftDto: UpdateAircraftDto) {
+  update(id: string, updateAircraftDto: UpdateAircraftDto) {
     return `This action updates a #${id} aircraft`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} aircraft`;
   }
 }
