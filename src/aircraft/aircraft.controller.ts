@@ -2,8 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseUUIDPipe
 import { AircraftService } from './aircraft.service';
 import { CreateAircraftDto } from './dto/create-aircraft.dto';
 import { UpdateAircraftDto } from './dto/update-aircraft.dto';
-import { PaginatinoDto } from 'src/common/dto';
+
 import { MessagePattern, Payload } from '@nestjs/microservices';
+import { PaginationDto } from 'src/common';
 
 @Controller('aircraft')
 export class AircraftController {
@@ -17,7 +18,7 @@ export class AircraftController {
 
   //@Get()
   @MessagePattern({ cmd: 'find_all_aircrafts' })
-  findAll(@Payload() paginationDto: PaginatinoDto) {
+  findAll(@Payload() paginationDto: PaginationDto) {
     return this.aircraftService.findAll(paginationDto);
   }
 
