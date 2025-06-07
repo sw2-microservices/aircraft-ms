@@ -1,8 +1,10 @@
-import { Injectable, Logger, NotFoundException, OnModuleInit } from '@nestjs/common';
+import { HttpStatus, Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { CreateAircraftDto } from './dto/create-aircraft.dto';
 import { UpdateAircraftDto } from './dto/update-aircraft.dto';
 import { PrismaClient } from 'generated/prisma';
-import { PaginatinoDto } from 'src/common/dto';
+
+import { RpcException } from '@nestjs/microservices';
+import { PaginationDto } from 'src/common';
 
 @Injectable()
 export class AircraftService extends PrismaClient implements OnModuleInit {
@@ -20,7 +22,7 @@ export class AircraftService extends PrismaClient implements OnModuleInit {
     });
   }
 
-  async findAll(paginationDto: PaginatinoDto) {
+  async findAll(paginationDto: PaginationDto) {
 
     const { page, limit } = paginationDto;
 
@@ -59,7 +61,10 @@ export class AircraftService extends PrismaClient implements OnModuleInit {
     });
 
     if (!aircraft) {
-      throw new NotFoundException(`Aircraft with id ${id} not found`);
+      throw new RpcException({ 
+        message: `Aircraft with id ${id} not found`,
+        status: HttpStatus.BAD_REQUEST
+      });
     }
 
     return aircraft;
