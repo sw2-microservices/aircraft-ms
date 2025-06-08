@@ -1,10 +1,9 @@
 import { HttpStatus, Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { CreateAircraftDto } from './dto/create-aircraft.dto';
 import { UpdateAircraftDto } from './dto/update-aircraft.dto';
-import { PrismaClient } from 'generated/prisma';
-
 import { RpcException } from '@nestjs/microservices';
 import { PaginationDto } from 'src/common';
+import { PrismaClient } from '@prisma/client';
 
 @Injectable()
 export class AircraftService extends PrismaClient implements OnModuleInit {
